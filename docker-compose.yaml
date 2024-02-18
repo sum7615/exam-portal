@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "8081:8081"
+    container_name: mbsapp
+    depends_on:
+      - msdb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://msdb:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+  msdb:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: msdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exam-app-deployment
+  labels:
+    app: exam-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exam-app
+  template:
+    metadata:
+      labels:
+        app: exam-app
+    spec:
+      containers:
+      - name: exam-app
+        image: sum7617/exam-portal:0.1
+        ports:
+        - containerPort: 8081
