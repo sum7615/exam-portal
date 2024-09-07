@@ -50,8 +50,9 @@ public class UserServiceimpl implements UserService {
 	        });
 
 	        user.getRoles().add(role);
+	        user.setIsActive("N");
 			userRepository.save(user);
-			user.setIsActive("N");
+			
 			ResgistrationResponseDto dto = new ResgistrationResponseDto();
 			dto.setUserEmail(user.getUsername());
 			dto.setRoles(user.getRoles().stream().map(e -> e.getName()).collect(Collectors.joining(",")));

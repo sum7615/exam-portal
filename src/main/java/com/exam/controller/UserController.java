@@ -128,7 +128,7 @@ public class UserController {
         tel.setPhoneType("Primary");
         
         user.getTelephone().add(tel);
-        
+        user.setUsername(userDto.getUserName());
           
         
 		ResgistrationResponseDto savedUser = userService.register(user);
