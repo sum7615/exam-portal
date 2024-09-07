@@ -164,7 +164,7 @@ public class TestManagementServiceimpl implements TestManagementService {
 		}
 		
 		return testManagementRepository.findAllByTest(testId).stream().map(e -> e.getUser().getId())
-				.collect(Collectors.toList()).stream().map(g -> userRepository.findById(g).get().getName())
+				.collect(Collectors.toList()).stream().map(g -> userRepository.findById(g).get().getFirstName())
 				.collect(Collectors.toList());
 	}
 
@@ -311,10 +311,8 @@ public class TestManagementServiceimpl implements TestManagementService {
 	    	  List<SingleUserReturn> attemptedUsers = allAttempted.stream()
 	    		        .map(attempt -> new SingleUserReturn(
 	    		            attempt.getUser().getId(),
-	    		            attempt.getUser().getName(),
-	    		            attempt.getUser().getPhone(),
-	    		            attempt.getUser().getRoles(),
-	    		            attempt.getUser().getAddress()
+	    		            attempt.getUser().getFirstName(),
+	    		            attempt.getUser().getUsername()
 	    		        ))
 	    		        .collect(Collectors.toList());
 	    	  return attemptedUsers;

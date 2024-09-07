@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResgistrationResponseDto {
-	private Long id;
-	private String name;
-	private String username;
-	private String phone;
-	private String address;
+	private String userEmail;
 	private String roles;
 }

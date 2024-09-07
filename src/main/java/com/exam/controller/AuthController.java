@@ -20,47 +20,38 @@ import com.exam.serviceimpl.JpaUserDetailsService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 @RestController
 public class AuthController {
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
-    private JpaUserDetailsService userDetailsService;
-
+	private JpaUserDetailsService userDetailsService;
 
 	@Autowired
-    private JwtUtils jwtUtils;
+	private JwtUtils jwtUtils;
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest request, HttpServletResponse response) {
-        try {
-//        	Authenticating the user details
-            authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword(),
-                            new ArrayList<>()));
-            final UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
-            if (user != null) {
-//            	Generating cookie
-                String jwt = jwtUtils.generateToken(user);
-                Cookie cookie = new Cookie("jwt", jwt);
-                cookie.setMaxAge(1 * 24 * 60 * 60); // expires in 1 days
-                cookie.setHttpOnly(true);
-                cookie.setPath("/"); // Global
-                response.addCookie(cookie);
-                return ResponseEntity.ok(new LoginResponse(request.getUsername(), jwt));
-            }
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
-    }
+	@PostMapping("/authenticate")
+	public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest request, HttpServletResponse response) {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
+					request.getPassword(), new ArrayList<>()));
+			final UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
+			if (user != null) {
+				String jwt = jwtUtils.generateToken(user);
+				Cookie cookie = new Cookie("jwt", jwt);
+				cookie.setMaxAge(1 * 24 * 60 * 60); // expires in 1 days
+				cookie.setHttpOnly(true);
+				cookie.setPath("/"); // Global
+				response.addCookie(cookie);
+				return ResponseEntity.ok(new LoginResponse(request.getUsername(), jwt));
+			}
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			System.out.println(e);
+			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+		}
+	}
 
-
- 
-
-	
 }

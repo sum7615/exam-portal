@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class SingleUserReturn {
 	private long id;
 	private String name;
-	private String Address;
+//	private String Address;
 	private String username;
-	private String phone;
+//	private String phone;
 	
 
 }

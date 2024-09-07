@@ -61,7 +61,7 @@ public class ResultServiceimpl implements ResultService {
 				        .filter(f -> f.getUser().getId() == i)
 				        .map(TestManagement::getObtainedScore)
 				        .findFirst().get();
-				std.setStudentName(userRepository.findById(i).get().getName());
+				std.setStudentName(userRepository.findById(i).get().getFirstName());
 				std.setObtainedMark(obtainedMark);
 				studentResultDtos.add(std);
 			}
