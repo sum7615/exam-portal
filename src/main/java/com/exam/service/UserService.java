@@ -18,6 +18,7 @@ import com.exam.exception.UserNotFoundException;
 public interface UserService {
 	
 	public boolean checkUserName(String userName);
+	public List<String> getAction(List<String>roles);
 	public ResgistrationResponseDto register(User user)throws TransactionSystemException, UserAlreadyExistException;
 	public String deleteuser(Long id) throws UserNotFoundException;
 	public User updateUser(UpdateUserDto updatedUser) throws UserNotFoundException;

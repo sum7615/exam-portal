@@ -1,5 +1,7 @@
 package com.exam.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +102,12 @@ public class UserController {
 	    return ResponseEntity.ok(userExists);
 	}
 
+	@PostMapping("/actions")
+	public ResponseEntity<List<String>> getAction(@RequestBody List<String> roles){
+		List<String> actionNames =userService.getAction(roles);
+		return ResponseEntity.ok(actionNames);
+	}
+	
 	@PostMapping("/register")
 	public ResponseEntity<Object> register(@Valid @RequestBody UserDto userDto, BindingResult result)
 			throws TransactionSystemException, UserAlreadyExistException {

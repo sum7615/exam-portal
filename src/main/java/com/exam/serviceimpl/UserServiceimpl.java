@@ -16,10 +16,12 @@ import com.exam.dto.ResgistrationResponseDto;
 import com.exam.dto.SingleUserReturn;
 import com.exam.dto.UpdateUserDto;
 import com.exam.dto.UserChangePasswordDto;
+import com.exam.entity.Action;
 import com.exam.entity.Role;
 import com.exam.entity.User;
 import com.exam.exception.UserAlreadyExistException;
 import com.exam.exception.UserNotFoundException;
+import com.exam.repository.ActionRepository;
 import com.exam.repository.EmailRepository;
 import com.exam.repository.RoleRepository;
 import com.exam.repository.UsersRepository;
@@ -40,6 +42,21 @@ public class UserServiceimpl implements UserService {
     @Autowired
     EmailService emailService;
     
+    @Autowired
+    ActionRepository actionRepository;
+    
+	@Override
+	public List<String> getAction(List<String> roleNames) {
+		List<Role> roles = roleRepository.findByNameIn(roleNames);
+
+		
+        return roles.stream()
+                    .flatMap(role -> role.getAction().stream())
+                    .map(Action::getActionName)
+                    .distinct()
+                    .collect(Collectors.toList());
+	}
+
     @Override
 	public boolean checkUserName(String userName) {
     	return (userRepository.getByUserName(userName.toUpperCase()).isEmpty())?true:false;
