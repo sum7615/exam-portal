@@ -119,13 +119,14 @@ public class UserController {
 		user.setLastName(userDto.getLastName());
 		Email email = new Email();
         email.setEmailAddress(userDto.getUserEmail());
+        email.setEmailType("primary");
         user.getEmails().add(email);
         
         
         
         Telephone tel = new Telephone();
         tel.setPhoneNumber(userDto.getPhone());
-        tel.setPhoneType("Primary");
+        tel.setPhoneType("primary");
         
         user.getTelephone().add(tel);
         user.setUsername(userDto.getUserName());

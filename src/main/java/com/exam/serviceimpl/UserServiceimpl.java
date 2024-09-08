@@ -1,10 +1,14 @@
 package com.exam.serviceimpl;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
@@ -20,6 +24,7 @@ import com.exam.repository.EmailRepository;
 import com.exam.repository.RoleRepository;
 import com.exam.repository.UsersRepository;
 import com.exam.service.UserService;
+import com.exam.util.EmailService;
 
 @Service
 public class UserServiceimpl implements UserService {
@@ -31,6 +36,9 @@ public class UserServiceimpl implements UserService {
     
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    EmailService emailService;
     
     @Override
 	public boolean checkUserName(String userName) {
@@ -52,6 +60,25 @@ public class UserServiceimpl implements UserService {
 	        user.getRoles().add(role);
 	        user.setIsActive("N");
 			userRepository.save(user);
+			
+			String subject ="Welcome to SPXAM, "+user.getFirstName();
+			String htmlBody;
+			try {
+				String templatePath = "template/welcome_template.html";
+
+				ClassPathResource resource = new ClassPathResource(templatePath);
+	             htmlBody = new String(Files.readAllBytes(resource.getFile().toPath()));
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				htmlBody="Welcome to family.";
+				
+			}
+			Set<String> toAddress =user.getEmails().stream().map(e->e.getEmailAddress()).collect(Collectors.toSet());
+			
+			emailService.sendSimpleEmail(toAddress, null, subject, htmlBody);
 			
 			ResgistrationResponseDto dto = new ResgistrationResponseDto();
 			dto.setUserEmail(user.getUsername());
